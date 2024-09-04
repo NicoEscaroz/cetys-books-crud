@@ -27,7 +27,9 @@ function BookForm({ addBook }) {
         onChange={(e) => setAuthor(e.target.value)}
         required
       />
-      <button type="submit">Add Book</button>
+      <button className="add" clastype="submit">
+        Add Book
+      </button>
     </form>
   );
 }

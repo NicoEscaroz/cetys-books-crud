@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import BookList from "./components/BookList";
+import React, { useEffect, useState } from "react";
 import BookForm from "./components/BookForm";
+import BookList from "./components/BookList";
 
 function App() {
   const [books, setBooks] = useState([]);
@@ -30,11 +30,23 @@ function App() {
     setBooks(books.filter((book) => book.id !== id));
   };
 
+  const updateBook = async (book) => {
+    const response = await fetch(`/api/books/${book.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(book),
+    });
+    const updatedBook = await response.json();
+    setBooks(books.map((b) => (b.id === updatedBook.id ? updatedBook : b)));
+  };
+
   return (
     <div className="App">
       <h1>Book Library</h1>
-      <BookForm addBook={addBook} />
-      <BookList books={books} deleteBook={deleteBook} />
+      <div className="buttons">
+        <BookForm addBook={addBook} />
+      </div>
+      <BookList books={books} deleteBook={deleteBook} updateBook={updateBook} />
     </div>
   );
 }
